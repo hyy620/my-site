@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页 - 广东科学技术职业技术学院</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #1a365d;
+            border-bottom: 3px solid #2c5282;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .about-content {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #2c5282;
+            display: inline-block;
+            width: 100px;
+        }
+
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .hobby-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 30px 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hobby-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .hobby-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .hobby-card h3 {
+            color: #1a365d;
+            margin-bottom: 10px;
+        }
+
+        .contact-list {
+            list-style: none;
+        }
+
+        .contact-list li {
+            padding: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            font-size: 1.5em;
+        }
+
+        .footer {
+            background: #1a365d;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hobbies-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-label {
+                display: block;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>欢迎来到我的个人主页</h1>
+        <p>广东科学技术职业技术学院 · 学生</p>
+    </header>
+
+    <main class="container">
+        <section class="section">
+            <h2>关于我</h2>
+            <div class="about-content">
+                <div class="avatar">👨‍🎓</div>
+                <div>
+                    <ul class="info-list">
+                        <li><span class="info-label">姓名：</span>广东科学技术职业技术学院学生</li>
+                        <li><span class="info-label">学校：</span>广东科学技术职业技术学院</li>
+                        <li><span class="info-label">身份：</span>在校学生</li>
+                        <li><span class="info-label">兴趣：</span>美食、睡觉、追剧</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>我的兴趣爱好</h2>
+            <div class="hobbies-grid">
+                <div class="hobby-card">
+                    <div class="hobby-icon">🍜</div>
+                    <h3>吃好吃的</h3>
+                    <p>探索各种美食，享受舌尖上的快乐</p>
+                </div>
+                <div class="hobby-card">
+                    <div class="hobby-icon">😴</div>
+                    <h3>睡觉</h3>
+                    <p>好好休息，养足精神每一天</p>
+                </div>
+                <div class="hobby-card">
+                    <div class="hobby-icon">📺</div>
+                    <h3>追剧</h3>
+                    <p>沉浸在精彩的剧情中，放松身心</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>联系方式</h2>
+            <ul class="contact-list">
+                <li><span class="contact-icon">📧</span> 邮箱：待补充</li>
+                <li><span class="contact-icon">📱</span> 电话：待补充</li>
+                <li><span class="contact-icon">💬</span> 微信：待补充</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 广东科学技术职业技术学院 · 个人主页</p>
+    </footer>
+</body>
+</html>
