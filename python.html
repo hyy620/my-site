@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python基础课程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #1a365d;
+            border-bottom: 3px solid #2c5282;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .section h3 {
+            color: #2c5282;
+            margin: 20px 0 15px 0;
+            font-size: 1.2em;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .course-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .course-card h4 {
+            color: #1a365d;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .course-card p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .course-card ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .course-card li {
+            margin-bottom: 8px;
+        }
+
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Python基础课程</h1>
+        <p>从零开始学习Python编程</p>
+    </header>
+
+    <main class="container">
+        <section class="section">
+            <h2>课程介绍</h2>
+            <p>本课程旨在帮助初学者快速掌握Python编程基础，包括语法、数据类型、控制结构、函数、面向对象编程等核心内容。通过理论学习和实践练习，你将能够编写简单的Python程序，为进一步学习打下坚实的基础。</p>
+        </section>
+
+        <section class="section">
+            <h2>课程内容</h2>
+            <div class="course-grid">
+                <div class="course-card">
+                    <h4>第一章：Python入门</h4>
+                    <ul>
+                        <li>Python简介</li>
+                        <li>安装Python</li>
+                        <li>第一个Python程序</li>
+                        <li>IDE选择</li>
+                    </ul>
+                    <div class="code-block">
+# 第一个Python程序
+print("Hello, Python!")
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h4>第二章：数据类型</h4>
+                    <ul>
+                        <li>数值类型</li>
+                        <li>字符串</li>
+                        <li>列表</li>
+                        <li>元组</li>
+                        <li>字典</li>
+                    </ul>
+                    <div class="code-block">
+# 基本数据类型
+a = 10          # 整数
+b = 3.14        # 浮点数
+c = "Python"     # 字符串
+d = [1, 2, 3]   # 列表
+e = (4, 5, 6)   # 元组
+f = {"name": "Python"}  # 字典
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h4>第三章：控制结构</h4>
+                    <ul>
+                        <li>条件语句</li>
+                        <li>循环语句</li>
+                        <li>break和continue</li>
+                    </ul>
+                    <div class="code-block">
+# 条件语句
+if x > 0:
+    print("正数")
+elif x < 0:
+    print("负数")
+else:
+    print("零")
+
+# 循环语句
+for i in range(5):
+    print(i)
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h4>第四章：函数</h4>
+                    <ul>
+                        <li>函数定义</li>
+                        <li>参数传递</li>
+                        <li>返回值</li>
+                        <li>lambda函数</li>
+                    </ul>
+                    <div class="code-block">
+# 函数定义
+def greet(name):
+    return f"Hello, {name}!"
+
+# 调用函数
+print(greet("Python"))
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h4>第五章：面向对象编程</h4>
+                    <ul>
+                        <li>类和对象</li>
+                        <li>继承</li>
+                        <li>多态</li>
+                        <li>封装</li>
+                    </ul>
+                    <div class="code-block">
+# 类定义
+class Person:
+    def __init__(self, name):
+        self.name = name
+    
+    def greet(self):
+        return f"Hello, I'm {self.name}"
+
+# 创建对象
+p = Person("Alice")
+print(p.greet())
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <h4>第六章：模块和包</h4>
+                    <ul>
+                        <li>导入模块</li>
+                        <li>创建模块</li>
+                        <li>包的结构</li>
+                    </ul>
+                    <div class="code-block">
+# 导入模块
+import math
+print(math.pi)
+
+# 从模块导入特定函数
+from random import randint
+print(randint(1, 10))
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>学习资源</h2>
+            <h3>推荐书籍</h3>
+            <ul>
+                <li>《Python编程：从入门到实践》</li>
+                <li>《流畅的Python》</li>
+                <li>《Python Cookbook》</li>
+            </ul>
+            
+            <h3>在线资源</h3>
+            <ul>
+                <li>Python官方文档</li>
+                <li>菜鸟教程 - Python</li>
+                <li>LeetCode - Python编程练习</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer" style="background: #1a365d; color: white; text-align: center; padding: 20px; margin-top: 40px;">
+        <p>&copy; 2026 Python基础课程</p>
+    </footer>
+</body>
+</html>
