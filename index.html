@@ -5,228 +5,1296 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>个人主页 - 广东科学技术职业技术学院</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #6C5CE7;
+            --primary-light: #A29BFE;
+            --secondary: #00CEC9;
+            --accent-pink: #FD79A8;
+            --accent-orange: #FDCB6E;
+            --accent-green: #55EFC4;
+            --accent-blue: #74B9FF;
+            --dark: #2D3436;
+            --gray: #636E72;
+            --light: #F8F9FD;
+            --white: #FFFFFF;
+            --gradient-1: linear-gradient(135deg, #6C5CE7 0%, #A29BFE 50%, #74B9FF 100%);
+            --gradient-2: linear-gradient(135deg, #00CEC9 0%, #55EFC4 100%);
+            --gradient-3: linear-gradient(135deg, #FD79A8 0%, #FDCB6E 100%);
+            --gradient-hero: linear-gradient(135deg, #6C5CE7 0%, #A29BFE 30%, #74B9FF 60%, #00CEC9 100%);
+            --shadow-sm: 0 2px 12px rgba(108, 92, 231, 0.08);
+            --shadow-md: 0 8px 30px rgba(108, 92, 231, 0.12);
+            --shadow-lg: 0 20px 60px rgba(108, 92, 231, 0.15);
+            --radius: 16px;
+        }
+
         body {
-            font-family: "Microsoft YaHei", Arial, sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
+            font-family: 'Noto Sans SC', "Microsoft YaHei", sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.8;
+            overflow-x: hidden;
         }
 
-        .header {
-            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
+        /* ===== 动画 ===== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        .section {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        .section h2 {
-            color: #1a365d;
-            border-bottom: 3px solid #2c5282;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-size: 1.5em;
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .about-content {
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 53%, 100% { animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); transform: translateY(0); }
+            40%, 43% { animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06); transform: translateY(-18px); }
+            70% { animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06); transform: translateY(-9px); }
+            90% { transform: translateY(-4px); }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== 导航栏 ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 30px;
             display: flex;
-            gap: 30px;
+            justify-content: space-between;
             align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            padding: 10px 30px;
+        }
+
+        .navbar .logo {
+            font-size: 1.3em;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled .nav-links a {
+            color: var(--dark);
+        }
+
+        .navbar .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .navbar.scrolled .nav-links a:hover {
+            background: rgba(108, 92, 231, 0.1);
+            color: var(--primary);
+        }
+
+        /* ===== Hero 区域 ===== */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient-hero);
+            background-size: 300% 300%;
+            animation: gradientShift 8s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            padding: 120px 20px 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: slideDown 0.8s ease;
+        }
+
+        .hero h1 {
+            font-size: 3.2em;
+            font-weight: 900;
+            margin-bottom: 16px;
+            line-height: 1.3;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero h1 .wave {
+            display: inline-block;
+            animation: bounce 2s ease infinite;
+            transform-origin: 70% 70%;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25em;
+            opacity: 0.92;
+            margin-bottom: 36px;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: white;
+            transform: translateY(-3px);
+        }
+
+        /* 浮动装饰元素 */
+        .hero-decor {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+        }
+
+        .hero-decor-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-pink);
+            top: 10%;
+            right: -5%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-decor-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--accent-orange);
+            bottom: 15%;
+            left: -3%;
+            animation: float 8s ease-in-out infinite 1s;
+        }
+
+        .hero-decor-3 {
+            width: 150px;
+            height: 150px;
+            background: var(--accent-green);
+            top: 30%;
+            left: 10%;
+            animation: float 7s ease-in-out infinite 2s;
+        }
+
+        /* 滚动指示器 */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s ease infinite;
+            z-index: 2;
+        }
+
+        .scroll-indicator .mouse {
+            width: 26px;
+            height: 42px;
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 13px;
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+        }
+
+        .scroll-indicator .mouse .wheel {
+            width: 4px;
+            height: 8px;
+            background: white;
+            border-radius: 2px;
+            animation: fadeInUp 1.5s ease infinite;
+        }
+
+        /* ===== 主内容区 ===== */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        /* ===== Section 通用 ===== */
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: var(--gradient-1);
+            color: white;
+            padding: 5px 18px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .section-header h2 {
+            font-size: 2.2em;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.05em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== 关于我 ===== */
+        .about-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 50px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--gradient-1);
+        }
+
+        .avatar-wrapper {
+            flex-shrink: 0;
+            position: relative;
         }
 
         .avatar {
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
+            width: 180px;
+            height: 180px;
+            background: var(--gradient-1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4em;
-            color: white;
-            flex-shrink: 0;
+            font-size: 5em;
+            box-shadow: 0 10px 40px rgba(108, 92, 231, 0.3);
+            position: relative;
+            z-index: 2;
         }
 
-        .info-list {
-            list-style: none;
+        .avatar-ring {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 3px dashed var(--primary-light);
+            border-radius: 50%;
+            animation: spin 20s linear infinite;
         }
 
-        .info-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .info-list li:last-child {
-            border-bottom: none;
+        .about-info h3 {
+            font-size: 1.6em;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--dark);
         }
 
-        .info-label {
-            font-weight: bold;
-            color: #2c5282;
-            display: inline-block;
-            width: 100px;
+        .about-info .school {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 20px;
+            font-size: 0.95em;
         }
 
+        .about-info .bio {
+            color: var(--gray);
+            margin-bottom: 24px;
+            line-height: 1.9;
+        }
+
+        .info-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .info-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.85em;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+
+        .info-tag:hover {
+            transform: scale(1.05);
+        }
+
+        .info-tag.purple {
+            background: rgba(108, 92, 231, 0.1);
+            color: var(--primary);
+        }
+
+        .info-tag.teal {
+            background: rgba(0, 206, 201, 0.1);
+            color: #00B894;
+        }
+
+        .info-tag.pink {
+            background: rgba(253, 121, 168, 0.1);
+            color: var(--accent-pink);
+        }
+
+        .info-tag.orange {
+            background: rgba(253, 203, 110, 0.15);
+            color: #E17055;
+        }
+
+        .info-tag.blue {
+            background: rgba(116, 185, 255, 0.15);
+            color: #0984E3;
+        }
+
+        /* ===== 技能展示 ===== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .skill-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .skill-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .skill-card:nth-child(1)::after { background: var(--gradient-1); }
+        .skill-card:nth-child(2)::after { background: var(--gradient-2); }
+        .skill-card:nth-child(3)::after { background: var(--gradient-3); }
+        .skill-card:nth-child(4)::after { background: linear-gradient(135deg, #FDCB6E, #E17055); }
+
+        .skill-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6em;
+            margin-bottom: 18px;
+        }
+
+        .skill-card:nth-child(1) .skill-icon { background: rgba(108, 92, 231, 0.1); }
+        .skill-card:nth-child(2) .skill-icon { background: rgba(0, 206, 201, 0.1); }
+        .skill-card:nth-child(3) .skill-icon { background: rgba(253, 121, 168, 0.1); }
+        .skill-card:nth-child(4) .skill-icon { background: rgba(253, 203, 110, 0.15); }
+
+        .skill-card h3 {
+            font-size: 1.15em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .skill-card p {
+            color: var(--gray);
+            font-size: 0.92em;
+            margin-bottom: 16px;
+        }
+
+        .skill-bar-bg {
+            height: 8px;
+            background: #F0F0F5;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-bar {
+            height: 100%;
+            border-radius: 4px;
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .skill-card:nth-child(1) .skill-bar { background: var(--gradient-1); }
+        .skill-card:nth-child(2) .skill-bar { background: var(--gradient-2); }
+        .skill-card:nth-child(3) .skill-bar { background: var(--gradient-3); }
+        .skill-card:nth-child(4) .skill-bar { background: linear-gradient(135deg, #FDCB6E, #E17055); }
+
+        .skill-bar.animated {
+            width: var(--progress);
+        }
+
+        /* ===== 兴趣爱好 ===== */
         .hobbies-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 24px;
         }
 
         .hobby-card {
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            padding: 30px 20px;
-            border-radius: 8px;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 36px 24px;
             text-align: center;
-            border: 1px solid #e2e8f0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
         }
 
         .hobby-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hobby-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: var(--radius);
+        }
+
+        .hobby-card:nth-child(1)::before { background: linear-gradient(135deg, rgba(253,121,168,0.05), rgba(253,203,110,0.05)); }
+        .hobby-card:nth-child(2)::before { background: linear-gradient(135deg, rgba(108,92,231,0.05), rgba(116,185,255,0.05)); }
+        .hobby-card:nth-child(3)::before { background: linear-gradient(135deg, rgba(0,206,201,0.05), rgba(85,239,196,0.05)); }
+
+        .hobby-card:hover::before {
+            opacity: 1;
         }
 
         .hobby-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
+            font-size: 3.5em;
+            margin-bottom: 18px;
+            display: inline-block;
+            transition: transform 0.4s ease;
+        }
+
+        .hobby-card:hover .hobby-icon {
+            transform: scale(1.2) rotate(5deg);
         }
 
         .hobby-card h3 {
-            color: #1a365d;
+            font-size: 1.2em;
+            font-weight: 700;
             margin-bottom: 10px;
+            color: var(--dark);
         }
 
-        .contact-list {
-            list-style: none;
+        .hobby-card p {
+            color: var(--gray);
+            font-size: 0.9em;
         }
 
-        .contact-list li {
-            padding: 12px 0;
+        /* ===== Python 学习 ===== */
+        .python-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 50px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .python-section::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            opacity: 0.06;
+        }
+
+        .python-section::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: -40px;
+            width: 150px;
+            height: 150px;
+            background: var(--gradient-2);
+            border-radius: 50%;
+            opacity: 0.06;
+        }
+
+        .python-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .python-content h2 {
+            font-size: 1.8em;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .python-content > p {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 1.02em;
+            line-height: 1.9;
+        }
+
+        .python-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .python-feature {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--light);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .python-feature:hover {
+            background: rgba(108, 92, 231, 0.06);
+            transform: translateX(5px);
+        }
+
+        .python-feature .feature-icon {
+            font-size: 1.4em;
+            flex-shrink: 0;
+        }
+
+        .python-feature span {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.92em;
+        }
+
+        .python-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--gradient-2);
+            color: white;
+            padding: 12px 26px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 206, 201, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 206, 201, 0.4);
+        }
+
+        /* ===== 时间线（我的日常） ===== */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary), var(--accent-pink));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 30px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            background: var(--white);
+        }
+
+        .timeline-item:nth-child(2)::before { border-color: var(--secondary); }
+        .timeline-item:nth-child(3)::before { border-color: var(--accent-pink); }
+        .timeline-item:nth-child(4)::before { border-color: var(--accent-orange); }
+
+        .timeline-item .time {
+            font-size: 0.8em;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timeline-item:nth-child(2) .time { color: var(--secondary); }
+        .timeline-item:nth-child(3) .time { color: var(--accent-pink); }
+        .timeline-item:nth-child(4) .time { color: #E17055; }
+
+        .timeline-item h4 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .timeline-item p {
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+
+        /* ===== 联系方式 ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .contact-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 36px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s ease;
+            cursor: default;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
         }
 
         .contact-icon {
-            font-size: 1.5em;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            margin: 0 auto 18px;
+            transition: transform 0.4s ease;
         }
 
+        .contact-card:hover .contact-icon {
+            transform: scale(1.15);
+        }
+
+        .contact-card:nth-child(1) .contact-icon { background: rgba(108, 92, 231, 0.1); }
+        .contact-card:nth-child(2) .contact-icon { background: rgba(0, 206, 201, 0.1); }
+        .contact-card:nth-child(3) .contact-icon { background: rgba(253, 121, 168, 0.1); }
+
+        .contact-card h4 {
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--dark);
+        }
+
+        .contact-card p {
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+
+        /* ===== 页脚 ===== */
         .footer {
-            background: #1a365d;
-            color: white;
+            background: var(--dark);
+            color: rgba(255,255,255,0.7);
             text-align: center;
-            padding: 20px;
-            margin-top: 40px;
+            padding: 40px 20px;
         }
 
+        .footer .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer .footer-logo {
+            font-size: 1.4em;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .footer p {
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .footer .heart {
+            color: var(--accent-pink);
+            display: inline-block;
+            animation: pulse 1.5s ease infinite;
+        }
+
+        /* ===== 响应式 ===== */
         @media (max-width: 768px) {
-            .about-content {
+            .hero h1 {
+                font-size: 2.2em;
+            }
+
+            .about-card {
                 flex-direction: column;
                 text-align: center;
+                padding: 36px 24px;
+                gap: 30px;
+            }
+
+            .about-card::before {
+                width: 100%;
+                height: 4px;
+            }
+
+            .info-tags {
+                justify-content: center;
             }
 
             .hobbies-grid {
                 grid-template-columns: 1fr;
             }
 
-            .info-label {
-                display: block;
-                margin-bottom: 5px;
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .python-features {
+                grid-template-columns: 1fr;
+            }
+
+            .python-section {
+                padding: 30px 24px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline {
+                padding-left: 30px;
+            }
+
+            .timeline-item::before {
+                left: -23px;
+            }
+
+            .section-header h2 {
+                font-size: 1.7em;
+            }
+
+            .navbar .nav-links {
+                gap: 4px;
+            }
+
+            .navbar .nav-links a {
+                padding: 6px 12px;
+                font-size: 0.8em;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <h1>欢迎来到我的个人主页</h1>
-        <p>广东科学技术职业技术学院 · 学生</p>
-    </header>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="logo">My Site</div>
+        <div class="nav-links">
+            <a href="#about">关于我</a>
+            <a href="#skills">技能</a>
+            <a href="#hobbies">爱好</a>
+            <a href="#python">Python</a>
+            <a href="#contact">联系</a>
+        </div>
+    </nav>
+
+    <!-- Hero 区域 -->
+    <section class="hero" id="hero">
+        <div class="hero-decor hero-decor-1"></div>
+        <div class="hero-decor hero-decor-2"></div>
+        <div class="hero-decor hero-decor-3"></div>
+
+        <div class="hero-content">
+            <div class="hero-badge">🎓 广东科学技术职业技术学院</div>
+            <h1><span class="wave">👋</span> 你好，欢迎来到<br>我的个人空间</h1>
+            <p class="subtitle">一个热爱生活、喜欢探索的大学生<br>在这里记录我的学习与成长</p>
+            <div class="hero-buttons">
+                <a href="#about" class="btn btn-white">✨ 了解更多</a>
+                <a href="#python" class="btn btn-outline">🐍 Python 课程</a>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+        </div>
+    </section>
 
     <main class="container">
-        <section class="section">
-            <h2>关于我</h2>
-            <div class="about-content">
-                <div class="avatar">👨‍🎓</div>
-                <div>
-                    <ul class="info-list">
-                        <li><span class="info-label">姓名：</span>广东科学技术职业技术学院学生</li>
-                        <li><span class="info-label">学校：</span>广东科学技术职业技术学院</li>
-                        <li><span class="info-label">身份：</span>在校学生</li>
-                        <li><span class="info-label">兴趣：</span>美食、睡觉、追剧</li>
-                    </ul>
+
+        <!-- 关于我 -->
+        <section class="section animate-on-scroll" id="about">
+            <div class="section-header">
+                <div class="section-tag">About Me</div>
+                <h2>关于我</h2>
+                <p>一个正在努力变得更好的自己</p>
+            </div>
+            <div class="about-card">
+                <div class="avatar-wrapper">
+                    <div class="avatar-ring"></div>
+                    <div class="avatar">👨‍🎓</div>
+                </div>
+                <div class="about-info">
+                    <h3>广科院学生</h3>
+                    <p class="school">📍 广东科学技术职业技术学院</p>
+                    <p class="bio">
+                        嗨！我是一名在校大学生，目前就读于广东科学技术职业技术学院。
+                        我对编程和技术充满热情，尤其喜欢用 Python 解决实际问题。
+                        课余时间喜欢探索美食、追追剧、打打游戏，享受生活中的每一刻。
+                        相信持续学习和不断实践，未来一定会更加精彩！
+                    </p>
+                    <div class="info-tags">
+                        <span class="info-tag purple">💻 编程爱好者</span>
+                        <span class="info-tag teal">🐍 Python 学习中</span>
+                        <span class="info-tag pink">🎮 游戏玩家</span>
+                        <span class="info-tag orange">🍜 美食达人</span>
+                        <span class="info-tag blue">📺 追剧狂人</span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="section">
-            <h2>我的兴趣爱好</h2>
+        <!-- 技能展示 -->
+        <section class="section animate-on-scroll" id="skills">
+            <div class="section-header">
+                <div class="section-tag">My Skills</div>
+                <h2>技能树</h2>
+                <p>正在不断点亮新技能的路上</p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">🐍</div>
+                    <h3>Python 编程</h3>
+                    <p>正在系统学习 Python 基础语法、数据结构和项目实战</p>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="--progress: 45%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🌐</div>
+                    <h3>Web 前端</h3>
+                    <p>了解 HTML、CSS 基础，能搭建简单的网页</p>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="--progress: 35%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">📱</div>
+                    <h3>Office 办公</h3>
+                    <p>熟练使用 Word、Excel、PPT 等办公软件</p>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="--progress: 70%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🧠</div>
+                    <h3>问题解决</h3>
+                    <p>善于搜索资料、独立思考，解决学习和生活中的问题</p>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="--progress: 60%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 兴趣爱好 -->
+        <section class="section animate-on-scroll" id="hobbies">
+            <div class="section-header">
+                <div class="section-tag">Hobbies</div>
+                <h2>我的兴趣爱好</h2>
+                <p>生活不止眼前的代码，还有诗和远方</p>
+            </div>
             <div class="hobbies-grid">
                 <div class="hobby-card">
                     <div class="hobby-icon">🍜</div>
-                    <h3>吃好吃的</h3>
-                    <p>探索各种美食，享受舌尖上的快乐</p>
+                    <h3>探索美食</h3>
+                    <p>走街串巷寻找好吃的，从学校食堂到街头小吃，每一口都是幸福感！</p>
                 </div>
                 <div class="hobby-card">
-                    <div class="hobby-icon">😴</div>
-                    <h3>睡觉</h3>
-                    <p>好好休息，养足精神每一天</p>
+                    <div class="hobby-icon">🎮</div>
+                    <h3>游戏世界</h3>
+                    <p>在虚拟世界中冒险，和朋友组队开黑，享受竞技的乐趣与团队配合</p>
                 </div>
                 <div class="hobby-card">
                     <div class="hobby-icon">📺</div>
-                    <h3>追剧</h3>
-                    <p>沉浸在精彩的剧情中，放松身心</p>
+                    <h3>追剧时光</h3>
+                    <p>沉浸在精彩的剧情中，从悬疑推理到热血动漫，好剧从不缺席！</p>
                 </div>
             </div>
         </section>
 
-        <section class="section">
-            <h2>Python学习</h2>
-            <p>欢迎来到Python基础课程学习模块！这里提供了从零开始学习Python编程的完整课程内容，包括语法基础、数据类型、控制结构、函数、面向对象编程等核心知识点。</p>
-            <a href="python.html" style="display: inline-block; background: #2c5282; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; margin-top: 20px; transition: background 0.3s ease;">开始学习Python</a>
+        <!-- 我的日常 -->
+        <section class="section animate-on-scroll" id="daily">
+            <div class="section-header">
+                <div class="section-tag">Daily Life</div>
+                <h2>我的日常</h2>
+                <p>记录大学生活的点点滴滴</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="time">🌅 早晨</div>
+                    <h4>起床 · 早餐 · 上课</h4>
+                    <p>新的一天从食堂的肠粉和豆浆开始，精神满满地走进教室，开启一天的学习之旅。</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">☀️ 下午</div>
+                    <h4>编程练习 · 图书馆自习</h4>
+                    <p>没课的时候去图书馆自习，或者打开电脑练习 Python 编程，有时候也和同学讨论课题。</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">🌆 傍晚</div>
+                    <h4>运动 · 社团活动</h4>
+                    <p>去操场跑跑步、打打篮球，或者参加社团活动，劳逸结合效率更高。</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">🌙 晚上</div>
+                    <h4>追剧 · 游戏 · 总结</h4>
+                    <p>回到宿舍放松一下，追追新番、打几局游戏，然后回顾今天学到的知识，规划明天的安排。</p>
+                </div>
+            </div>
         </section>
 
-        <section class="section">
-            <h2>联系方式</h2>
-            <ul class="contact-list">
-                <li><span class="contact-icon">📧</span> 邮箱：待补充</li>
-                <li><span class="contact-icon">📱</span> 电话：待补充</li>
-                <li><span class="contact-icon">💬</span> 微信：待补充</li>
-            </ul>
+        <!-- Python 学习 -->
+        <section class="section animate-on-scroll" id="python">
+            <div class="python-section">
+                <div class="python-content">
+                    <h2>🐍 Python 基础课程</h2>
+                    <p>欢迎来到 Python 基础课程学习模块！这里提供了从零开始学习 Python 编程的完整课程内容，配有在线代码运行器，边学边练，轻松掌握编程技能。</p>
+
+                    <div class="python-features">
+                        <div class="python-feature">
+                            <span class="feature-icon">📖</span>
+                            <span>从零基础开始，循序渐进</span>
+                        </div>
+                        <div class="python-feature">
+                            <span class="feature-icon">💻</span>
+                            <span>在线运行代码，即学即练</span>
+                        </div>
+                        <div class="python-feature">
+                            <span class="feature-icon">🎯</span>
+                            <span>每节配有练习题，巩固知识</span>
+                        </div>
+                        <div class="python-feature">
+                            <span class="feature-icon">🎨</span>
+                            <span>活泼的界面设计，学习不枯燥</span>
+                        </div>
+                    </div>
+
+                    <div class="python-buttons">
+                        <a href="python.html" class="btn-primary">📚 查看完整课程</a>
+                        <a href="python-ch1.html" class="btn-secondary">📖 第一章：Python入门</a>
+                    </div>
+                </div>
+            </div>
         </section>
+
+        <!-- 联系方式 -->
+        <section class="section animate-on-scroll" id="contact">
+            <div class="section-header">
+                <div class="section-tag">Contact</div>
+                <h2>联系我</h2>
+                <p>欢迎交流学习，一起进步！</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">📧</div>
+                    <h4>电子邮箱</h4>
+                    <p>待补充</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">📱</div>
+                    <h4>手机号码</h4>
+                    <p>待补充</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">💬</div>
+                    <h4>微信</h4>
+                    <p>待补充</p>
+                </div>
+            </div>
+        </section>
+
     </main>
 
+    <!-- 页脚 -->
     <footer class="footer">
-        <p>&copy; 2026 广东科学技术职业技术学院 · 个人主页</p>
+        <div class="footer-content">
+            <div class="footer-logo">My Site</div>
+            <p>用 <span class="heart">❤️</span> 和代码搭建</p>
+            <p>&copy; 2026 广东科学技术职业技术学院 · 个人主页</p>
+        </div>
     </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // ===== 导航栏滚动效果 =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 80) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== 平滑滚动 =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== 滚动动画 =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+
+                    // 技能条动画
+                    entry.target.querySelectorAll('.skill-bar').forEach(bar => {
+                        setTimeout(() => {
+                            bar.classList.add('animated');
+                        }, 300);
+                    });
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
